@@ -4,78 +4,76 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>پرواز تفریحی رامسر | پارا‌تریک</title>
+    <title>پرواز تفریحی رامسر | پاراگلایدر و پاراتریک</title>
+
+    <meta name="description"
+          content="رزرو پرواز تفریحی پاراتریک در رامسر">
 
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- =========================
-     HEADER
-========================= -->
+<!-- ================= HEADER ================= -->
 
-<header class="header">
-    <div class="container header-content">
+<header>
+    <div class="navbar">
 
-        <div class="logo">
-            <div class="logo-placeholder">🦅</div>
+        <a href="#home" class="logo-box">
+            <div class="logo">🦅</div>
 
-            <div>
+            <div class="logo-text">
                 <strong>PARATRIKE</strong>
-                <small>پرواز تفریحی رامسر</small>
+                <span>پرواز تفریحی رامسر</span>
             </div>
-        </div>
+        </a>
 
-        <nav class="nav">
+        <nav>
             <a href="#home">خانه</a>
             <a href="#flights">پروازها</a>
             <a href="#services">خدمات</a>
             <a href="#about">درباره ما</a>
+            <a href="#booking">رزرو</a>
             <a href="#contact">تماس</a>
         </nav>
 
-        <a href="#booking" class="header-btn">
-            رزرو بلیت
-        </a>
+        <button class="btn btn-primary" onclick="openAdmin()">
+            ⚙️ مدیر
+        </button>
 
     </div>
 </header>
 
 
-<!-- =========================
-     HERO
-========================= -->
+<!-- ================= HERO ================= -->
 
-<section id="home" class="hero">
+<section class="hero" id="home">
 
-    <div class="hero-overlay"></div>
+    <div class="hero-content">
 
-    <div class="container hero-content">
-
-        <span class="hero-label">
+        <div class="hero-badge">
             🪂 پرواز تفریحی در رامسر
-        </span>
+        </div>
 
         <h1>
-            آسمان رامسر را
-            <br>
-            <span>از زاویه‌ای متفاوت ببین</span>
+            رامسر را از
+            <span>آسمان</span>
+            ببینید
         </h1>
 
         <p>
-            تجربه پرواز با پارا‌تریک در یکی از زیباترین مناطق شمال ایران.
-            پروازهای عادی، VIP و CIP برای تجربه‌ای متفاوت.
+            تجربه‌ای متفاوت از پرواز بر فراز طبیعت زیبای رامسر
+            با پاراتریک و خلبان مجرب.
         </p>
 
         <div class="hero-buttons">
 
-            <a href="#flights" class="btn-primary">
-                مشاهده پروازها
+            <a href="#booking" class="btn btn-primary">
+                رزرو پرواز
             </a>
 
-            <a href="#booking" class="btn-secondary">
-                رزرو آنلاین
+            <a href="#flights" class="btn btn-outline">
+                مشاهده پروازها
             </a>
 
         </div>
@@ -85,24 +83,20 @@
 </section>
 
 
-<!-- =========================
-     FLIGHTS
-========================= -->
+<!-- ================= FLIGHTS ================= -->
 
-<section id="flights" class="section flights">
+<section class="flights" id="flights">
 
     <div class="container">
 
         <div class="section-title">
 
-            <span>FLIGHT EXPERIENCES</span>
+            <span>FLIGHT PACKAGES</span>
 
-            <h2>
-                پرواز خودت را انتخاب کن
-            </h2>
+            <h2>انتخاب پرواز</h2>
 
             <p>
-                سه نوع پرواز برای تجربه‌ای متناسب با انتخاب شما
+                پرواز مناسب خود را انتخاب کنید
             </p>
 
         </div>
@@ -115,44 +109,37 @@
 
             <div class="flight-card">
 
-                <span class="flight-badge">
-                    NORMAL
-                </span>
-
-                <h3>
-                    پرواز عادی
-                </h3>
-
-                <div class="duration">
-                    ⏱️ ۵ تا ۸ دقیقه
+                <div class="flight-icon">
+                    🪂
                 </div>
 
-                <div class="price">
+                <h3>پرواز عادی</h3>
 
-                    <strong
-                        id="normalPrice"
-                        data-price="2600000">
-                        ۲٬۶۰۰٬۰۰۰
-                    </strong>
+                <p>
+                    مناسب برای تجربه اولین پرواز
+                </p>
+
+                <div class="price">
+                    <span id="normalPrice">۲٬۶۰۰٬۰۰۰</span>
+                    <small>تومان</small>
+                </div>
+
+                <div class="flight-info">
 
                     <span>
-                        تومان
+                        ⏱ ۵ تا ۸ دقیقه
+                    </span>
+
+                    <span>
+                        ⚖️ تا ۸۰ کیلو
                     </span>
 
                 </div>
 
-                <ul>
-
-                    <li>✓ پرواز پارا‌تریک</li>
-
-                    <li>✓ مناسب تا وزن ۸۰ کیلوگرم</li>
-
-                    <li>✓ تجربه پرواز تفریحی</li>
-
-                </ul>
+                <br>
 
                 <button
-                    class="card-btn"
+                    class="btn btn-primary"
                     onclick="selectFlight('normal')">
 
                     انتخاب پرواز
@@ -166,50 +153,41 @@
 
             <div class="flight-card featured">
 
-                <span class="popular">
-                    محبوب‌ترین
-                </span>
-
-                <span class="flight-badge">
-                    VIP
-                </span>
-
-                <h3>
-                    پرواز VIP
-                </h3>
-
-                <div class="duration">
-                    ⏱️ ۱۰ تا ۱۲ دقیقه
+                <div class="tag">
+                    محبوب
                 </div>
 
+                <div class="flight-icon">
+                    ⭐
+                </div>
+
+                <h3>پرواز VIP</h3>
+
+                <p>
+                    زمان بیشتر برای لذت از پرواز
+                </p>
+
                 <div class="price">
+                    <span id="vipPrice">۴٬۰۰۰٬۰۰۰</span>
+                    <small>تومان</small>
+                </div>
 
-                    <strong
-                        id="vipPrice"
-                        data-price="4000000">
-
-                        ۴٬۰۰۰٬۰۰۰
-
-                    </strong>
+                <div class="flight-info">
 
                     <span>
-                        تومان
+                        ⏱ ۱۰ تا ۱۲ دقیقه
+                    </span>
+
+                    <span>
+                        ⚖️ تا ۸۰ کیلو
                     </span>
 
                 </div>
 
-                <ul>
-
-                    <li>✓ پرواز طولانی‌تر</li>
-
-                    <li>✓ خدمات ویژه</li>
-
-                    <li>✓ تجربه VIP</li>
-
-                </ul>
+                <br>
 
                 <button
-                    class="card-btn"
+                    class="btn btn-primary"
                     onclick="selectFlight('vip')">
 
                     انتخاب پرواز
@@ -223,46 +201,37 @@
 
             <div class="flight-card">
 
-                <span class="flight-badge">
-                    CIP
-                </span>
-
-                <h3>
-                    پرواز CIP
-                </h3>
-
-                <div class="duration">
-                    ⏱️ ۱۲ تا ۱۵ دقیقه
+                <div class="flight-icon">
+                    👑
                 </div>
 
+                <h3>پرواز CIP</h3>
+
+                <p>
+                    تجربه ویژه و طولانی‌تر
+                </p>
+
                 <div class="price">
+                    <span id="cipPrice">۵٬۰۰۰٬۰۰۰</span>
+                    <small>تومان</small>
+                </div>
 
-                    <strong
-                        id="cipPrice"
-                        data-price="5000000">
-
-                        ۵٬۰۰۰٬۰۰۰
-
-                    </strong>
+                <div class="flight-info">
 
                     <span>
-                        تومان
+                        ⏱ ۱۲ تا ۱۵ دقیقه
+                    </span>
+
+                    <span>
+                        ⚖️ تا ۸۰ کیلو
                     </span>
 
                 </div>
 
-                <ul>
-
-                    <li>✓ طولانی‌ترین پرواز</li>
-
-                    <li>✓ خدمات اختصاصی</li>
-
-                    <li>✓ تجربه ویژه CIP</li>
-
-                </ul>
+                <br>
 
                 <button
-                    class="card-btn"
+                    class="btn btn-primary"
                     onclick="selectFlight('cip')">
 
                     انتخاب پرواز
@@ -278,21 +247,17 @@
 </section>
 
 
-<!-- =========================
-     SERVICES
-========================= -->
+<!-- ================= SERVICES ================= -->
 
-<section id="services" class="section services">
+<section class="services" id="services">
 
     <div class="container">
 
         <div class="section-title">
 
-            <span>SERVICES</span>
+            <span>OUR SERVICES</span>
 
-            <h2>
-                خدمات مجموعه
-            </h2>
+            <h2>خدمات ما</h2>
 
         </div>
 
@@ -306,16 +271,18 @@
                     📷
                 </div>
 
-                <h3>
-                    اجاره دوربین
-                </h3>
+                <h3>اجاره دوربین</h3>
 
                 <p>
-                    ثبت لحظات پرواز با دوربین مجموعه
+                    ثبت لحظات پرواز با دوربین
+                    مخصوص.
                 </p>
 
-                <strong id="cameraPrice">
-                    ۷۰۰٬۰۰۰ تومان
+                <br>
+
+                <strong>
+                    <span id="cameraPrice">۷۰۰٬۰۰۰</span>
+                    تومان
                 </strong>
 
             </div>
@@ -327,13 +294,13 @@
                     ⚖️
                 </div>
 
-                <h3>
-                    شرایط وزن
-                </h3>
+                <h3>قوانین وزن</h3>
 
                 <p>
-                    پرواز تا وزن ۸۰ کیلوگرم با قیمت پایه انجام می‌شود.
-                    برای وزن بالاتر، تعیین قیمت پس از وزن‌کشی در مجموعه انجام می‌شود.
+                    ظرفیت استاندارد پرواز تا
+                    ۸۰ کیلوگرم است.
+                    برای وزن بیشتر، بررسی در محل
+                    انجام می‌شود.
                 </p>
 
             </div>
@@ -342,19 +309,21 @@
             <div class="service-card">
 
                 <div class="service-icon">
-                    🌍
+                    🌅
                 </div>
 
-                <h3>
-                    توریست
-                </h3>
+                <h3>پرواز توریستی</h3>
 
                 <p>
-                    قیمت بلیت مخصوص توریست
+                    مناسب برای گردشگران و
+                    علاقه‌مندان به تجربه پرواز.
                 </p>
 
-                <strong id="touristPrice">
-                    ۳٬۰۰۰٬۰۰۰ تومان
+                <br>
+
+                <strong>
+                    <span id="touristPrice">۳٬۰۰۰٬۰۰۰</span>
+                    تومان
                 </strong>
 
             </div>
@@ -366,26 +335,56 @@
 </section>
 
 
-<!-- =========================
-     ABOUT
-========================= -->
+<!-- ================= ABOUT ================= -->
 
-<section id="about" class="section about">
+<section class="about" id="about">
 
     <div class="container">
 
-        <div class="section-title">
+        <div class="about-box">
 
-            <span>ABOUT US</span>
+            <div class="about-text">
 
-            <h2>
-                تجربه‌ای متفاوت در آسمان رامسر
-            </h2>
+                <h2>
+                    تجربه‌ای متفاوت
+                    <span>در آسمان</span>
+                </h2>
 
-            <p>
-                در مجموعه پرواز تفریحی رامسر تلاش می‌کنیم
-                تجربه‌ای امن و خاطره‌انگیز از پرواز برای شما ایجاد کنیم.
-            </p>
+                <p>
+                    پرواز تفریحی رامسر فرصتی برای دیدن
+                    زیبایی‌های طبیعت از زاویه‌ای متفاوت است.
+                </p>
+
+                <p>
+                    تمامی پروازها با رعایت اصول ایمنی و
+                    توسط خلبان انجام می‌شوند.
+                </p>
+
+
+                <ul class="about-list">
+
+                    <li>
+                        پرواز بر فراز طبیعت رامسر
+                    </li>
+
+                    <li>
+                        خلبان مجرب
+                    </li>
+
+                    <li>
+                        امکان انتخاب چند نوع پرواز
+                    </li>
+
+                    <li>
+                        امکان رزرو اینترنتی
+                    </li>
+
+                </ul>
+
+            </div>
+
+
+            <div class="about-image"></div>
 
         </div>
 
@@ -394,213 +393,251 @@
 </section>
 
 
-<!-- =========================
-     BOOKING
-========================= -->
+<!-- ================= BOOKING ================= -->
 
-<section id="booking" class="section booking">
+<section class="booking" id="booking">
 
     <div class="container">
 
+        <div class="section-title">
+
+            <span>ONLINE BOOKING</span>
+
+            <h2>رزرو پرواز</h2>
+
+            <p>
+                اطلاعات خود را وارد کنید تا درخواست
+                رزرو ثبت شود.
+            </p>
+
+        </div>
+
+
         <div class="booking-box">
 
-            <div class="booking-info">
+            <form id="bookingForm">
 
-                <span>
-                    ONLINE RESERVATION
-                </span>
-
-                <h2>
-                    رزرو پرواز
-                </h2>
-
-                <p>
-                    اطلاعات خود را وارد کنید تا درخواست رزرو
-                    برای مجموعه ارسال شود.
-                </p>
-
-            </div>
+                <div class="form-grid">
 
 
-            <form
-                id="bookingForm"
-                class="booking-form">
+                    <!-- NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            نام و نام خانوادگی
+                        </label>
+
+                        <input
+                            type="text"
+                            id="name"
+                            placeholder="مثلاً علی رضایی"
+                            required>
+
+                    </div>
 
 
-                <div class="form-group">
+                    <!-- PHONE -->
 
-                    <label>
-                        نام و نام خانوادگی
-                    </label>
+                    <div class="form-group">
 
-                    <input
-                        type="text"
-                        id="fullName"
-                        placeholder="نام و نام خانوادگی"
-                        required>
+                        <label>
+                            شماره موبایل
+                        </label>
+
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="09123456789"
+                            maxlength="11"
+                            required>
+
+                    </div>
+
+
+                    <!-- FLIGHT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            نوع پرواز
+                        </label>
+
+                        <select id="flight" required>
+
+                            <option value="">
+                                انتخاب کنید
+                            </option>
+
+                            <option value="normal">
+                                پرواز عادی
+                            </option>
+
+                            <option value="vip">
+                                پرواز VIP
+                            </option>
+
+                            <option value="cip">
+                                پرواز CIP
+                            </option>
+
+                            <option value="tourist">
+                                پرواز توریستی
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- PASSENGER -->
+
+                    <div class="form-group">
+
+                        <label>
+                            نوع مسافر
+                        </label>
+
+                        <select id="passengerType">
+
+                            <option value="adult">
+                                بزرگسال
+                            </option>
+
+                            <option value="child">
+                                کودک
+                            </option>
+
+                        </select>
+
+                    </div>
+
+
+                    <!-- WEIGHT -->
+
+                    <div class="form-group">
+
+                        <label>
+                            وزن مسافر (کیلوگرم)
+                        </label>
+
+                        <input
+                            type="number"
+                            id="weight"
+                            min="1"
+                            max="200"
+                            placeholder="مثلاً ۷۰">
+
+                        <div
+                            id="weightWarning"
+                            class="warning">
+                        </div>
+
+                    </div>
+
+
+                    <!-- PASSENGERS -->
+
+                    <div class="form-group">
+
+                        <label>
+                            تعداد مسافر
+                        </label>
+
+                        <input
+                            type="number"
+                            id="passengers"
+                            min="1"
+                            max="10"
+                            value="1"
+                            required>
+
+                    </div>
+
+
+                    <!-- DATE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            تاریخ پرواز
+                        </label>
+
+                        <input
+                            type="date"
+                            id="date"
+                            required>
+
+                    </div>
+
+
+                    <!-- TIME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            ساعت پیشنهادی
+                        </label>
+
+                        <input
+                            type="time"
+                            id="time"
+                            required>
+
+                    </div>
+
+
+                    <!-- CAMERA -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            دوربین می‌خواهید؟
+                        </label>
+
+                        <select id="camera">
+
+                            <option value="no">
+                                خیر
+                            </option>
+
+                            <option value="yes">
+                                بله - اجاره دوربین
+                            </option>
+
+                        </select>
+
+                    </div>
 
                 </div>
 
 
-                <div class="form-group">
+                <!-- PRICE -->
 
-                    <label>
-                        شماره موبایل
-                    </label>
+                <div class="price-preview">
 
-                    <input
-                        type="tel"
-                        id="phone"
-                        placeholder="09xxxxxxxxx"
-                        required>
+                    <span>
+                        مبلغ تقریبی
+                    </span>
 
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        نوع پرواز
-                    </label>
-
-                    <select id="flightType">
-
-                        <option value="normal">
-                            پرواز عادی
-                        </option>
-
-                        <option value="vip">
-                            VIP
-                        </option>
-
-                        <option value="cip">
-                            CIP
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        نوع مسافر
-                    </label>
-
-                    <select id="passengerType">
-
-                        <option value="normal">
-                            مسافر عادی
-                        </option>
-
-                        <option value="tourist">
-                            توریست
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        وزن مسافر
-                    </label>
-
-                    <input
-                        type="number"
-                        id="weight"
-                        placeholder="وزن به کیلوگرم"
-                        min="1"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تعداد مسافر
-                    </label>
-
-                    <input
-                        type="number"
-                        id="passengers"
-                        value="1"
-                        min="1"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        تاریخ پرواز
-                    </label>
-
-                    <input
-                        type="date"
-                        id="flightDate"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        ساعت پرواز
-                    </label>
-
-                    <input
-                        type="time"
-                        id="flightTime"
-                        required>
-
-                </div>
-
-
-                <div class="form-group">
-
-                    <label>
-                        اجاره دوربین
-                    </label>
-
-                    <select id="camera">
-
-                        <option value="no">
-                            خیر
-                        </option>
-
-                        <option value="yes">
-                            بله - ۷۰۰٬۰۰۰ تومان
-                        </option>
-
-                    </select>
-
-                </div>
-
-
-                <div
-                    id="pricePreview"
-                    class="price-preview">
-
-                    مبلغ تقریبی:
-                    <strong>
-                        ۲٬۶۰۰٬۰۰۰ تومان
+                    <strong id="pricePreview">
+                        ۰ تومان
                     </strong>
+
+                    <div
+                        id="priceWarning"
+                        class="warning">
+                    </div>
 
                 </div>
 
 
                 <button
                     type="submit"
-                    class="submit-btn">
+                    class="btn btn-primary"
+                    style="width:100%;">
 
-                    ثبت درخواست رزرو
+                    📋 ثبت درخواست رزرو
 
                 </button>
 
@@ -613,34 +650,35 @@
 </section>
 
 
-<!-- =========================
-     CONTACT
-========================= -->
+<!-- ================= CONTACT ================= -->
 
-<section id="contact" class="section contact">
+<section class="contact" id="contact">
 
     <div class="container">
 
         <div class="section-title">
 
-            <span>CONTACT</span>
+            <span>CONTACT US</span>
 
-            <h2>
-                با ما در ارتباط باشید
-            </h2>
+            <h2>تماس با ما</h2>
 
         </div>
 
 
         <div class="contact-grid">
 
+
             <div class="contact-card">
 
-                <span>📞</span>
-
                 <h3>
-                    شماره تماس
+                    📞 شماره تماس
                 </h3>
+
+                <p>
+                    برای هماهنگی و اطلاعات بیشتر:
+                </p>
+
+                <br>
 
                 <a href="tel:09121203467">
                     09121203467
@@ -651,10 +689,8 @@
 
             <div class="contact-card">
 
-                <span>📍</span>
-
                 <h3>
-                    آدرس
+                    📍 آدرس سایت پرواز
                 </h3>
 
                 <p>
@@ -672,221 +708,199 @@
 </section>
 
 
-<!-- =========================
-     ADMIN PANEL
-========================= -->
-
-<section
-    id="adminPanel"
-    class="admin-panel"
-    style="display:none;">
-
-    <div class="container">
-
-        <div class="admin-header">
-
-            <div>
-                <span>
-                    ADMIN PANEL
-                </span>
-
-                <h2>
-                    پنل مدیریت
-                </h2>
-            </div>
-
-            <button
-                onclick="closeAdmin()"
-                class="admin-close">
-
-                خروج
-
-            </button>
-
-        </div>
-
-
-        <!-- Prices -->
-
-        <div class="admin-card">
-
-            <h3>
-                💰 مدیریت قیمت‌ها
-            </h3>
-
-
-            <div class="admin-grid">
-
-                <div>
-                    <label>
-                        قیمت عادی
-                    </label>
-
-                    <input
-                        type="number"
-                        id="adminNormal"
-                        value="2600000">
-                </div>
-
-
-                <div>
-                    <label>
-                        قیمت VIP
-                    </label>
-
-                    <input
-                        type="number"
-                        id="adminVip"
-                        value="4000000">
-                </div>
-
-
-                <div>
-                    <label>
-                        قیمت CIP
-                    </label>
-
-                    <input
-                        type="number"
-                        id="adminCip"
-                        value="5000000">
-                </div>
-
-
-                <div>
-                    <label>
-                        قیمت توریست
-                    </label>
-
-                    <input
-                        type="number"
-                        id="adminTourist"
-                        value="3000000">
-                </div>
-
-
-                <div>
-                    <label>
-                        قیمت دوربین
-                    </label>
-
-                    <input
-                        type="number"
-                        id="adminCamera"
-                        value="700000">
-                </div>
-
-            </div>
-
-
-            <button
-                onclick="savePrices()"
-                class="admin-save">
-
-                ذخیره قیمت‌ها
-
-            </button>
-
-        </div>
-
-
-        <!-- Reservations -->
-
-        <div class="admin-card">
-
-            <h3>
-                🎫 رزروهای ثبت‌شده
-            </h3>
-
-            <div id="reservationsList">
-
-                <p class="empty-reservations">
-                    هنوز رزروی ثبت نشده است.
-                </p>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</section>
-
-
-<!-- =========================
-     FOOTER
-========================= -->
-
-<footer class="footer">
-
-    <div class="container">
-
-        <div class="footer-content">
-
-            <div>
-
-                <strong>
-                    PARATRIKE
-                </strong>
-
-                <p>
-                    پرواز تفریحی رامسر
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <h4>
-                    تماس
-                </h4>
-
-                <p>
-                    09121203467
-                </p>
-
-            </div>
-
-
-            <div>
-
-                <h4>
-                    آدرس
-                </h4>
-
-                <p>
-                    رامسر، انتهای بلوار معلم،
-                    کوچه ساحل ۱۰، پشت دریابانی
-                </p>
-
-            </div>
-
-        </div>
-
-
-        <div class="copyright">
-
-            © تمامی حقوق برای مجموعه محفوظ است.
-
-        </div>
-
-    </div>
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+    <p>
+        © 2026
+        <strong>PARATRIKE</strong>
+        — پرواز تفریحی رامسر
+    </p>
 
 </footer>
 
 
-<!-- Admin Access -->
+<!-- ================================================= -->
+<!-- ================= ADMIN PANEL =================== -->
+<!-- ================================================= -->
 
-<button
-    id="adminAccess"
-    onclick="openAdmin()"
-    title="پنل مدیریت">
+<div id="adminPanel">
 
-    ⚙️
+    <div class="admin-container">
 
-</button>
 
+        <div class="admin-header">
+
+            <div>
+
+                <h2>
+                    ⚙️ پنل مدیریت
+                </h2>
+
+                <p style="color:#8998a9;font-size:12px;">
+                    مدیریت قیمت‌ها و درخواست‌های رزرو
+                </p>
+
+            </div>
+
+
+            <button
+                class="btn btn-outline"
+                onclick="closeAdmin()">
+
+                ✕ بستن
+
+            </button>
+
+        </div>
+
+
+        <!-- ================= PRICES ================= -->
+
+        <h3 style="margin-bottom:15px;">
+            💰 مدیریت قیمت‌ها
+        </h3>
+
+
+        <div class="admin-price-grid">
+
+
+            <div>
+
+                <label>
+                    عادی
+                </label>
+
+                <input
+                    type="number"
+                    id="adminNormalPrice"
+                    placeholder="قیمت عادی">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    VIP
+                </label>
+
+                <input
+                    type="number"
+                    id="adminVipPrice"
+                    placeholder="قیمت VIP">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    CIP
+                </label>
+
+                <input
+                    type="number"
+                    id="adminCipPrice"
+                    placeholder="قیمت CIP">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    توریستی
+                </label>
+
+                <input
+                    type="number"
+                    id="adminTouristPrice"
+                    placeholder="قیمت توریستی">
+
+            </div>
+
+
+            <div>
+
+                <label>
+                    دوربین
+                </label>
+
+                <input
+                    type="number"
+                    id="adminCameraPrice"
+                    placeholder="قیمت دوربین">
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="btn btn-primary"
+            onclick="saveAdminPrices()">
+
+            💾 ذخیره قیمت‌ها
+
+        </button>
+
+
+        <!-- ================= RESERVATIONS ================= -->
+
+        <div style="
+            margin-top:40px;
+            border-top:1px solid rgba(255,255,255,0.08);
+            padding-top:25px;
+        ">
+
+            <div style="
+                display:flex;
+                justify-content:space-between;
+                align-items:center;
+                margin-bottom:20px;
+                gap:10px;
+            ">
+
+                <h3>
+                    📋 درخواست‌های رزرو
+                </h3>
+
+                <button
+                    class="btn btn-outline"
+                    onclick="renderReservations()">
+
+                    🔄 بروزرسانی
+
+                </button>
+
+            </div>
+
+
+            <div
+                id="reservationList"
+                class="reservation-list">
+
+                <p style="
+                    color:#8998a9;
+                    text-align:center;
+                    padding:30px;
+                ">
+                    هنوز درخواست رزروی ثبت نشده است.
+                </p>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+
+<!-- ================= SCRIPT ================= -->
 
 <script src="script.js"></script>
 
