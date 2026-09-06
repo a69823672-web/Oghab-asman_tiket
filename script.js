@@ -1,8 +1,15 @@
-// ========================================
-// تنظیمات اولیه
-// ========================================
+/* =====================================================
+   PARATRIKE - MAIN SCRIPT
+   مدیریت رزرو + پنل مدیر + قیمت‌ها
+   ===================================================== */
 
-const defaultPrices = {
+"use strict";
+
+/* =========================
+   DEFAULT PRICES
+========================= */
+
+const DEFAULT_PRICES = {
     normal: 2600000,
     vip: 4000000,
     cip: 5000000,
@@ -10,375 +17,339 @@ const defaultPrices = {
     camera: 700000
 };
 
-let prices = JSON.parse(localStorage.getItem("paratrikePrices"))
-    || defaultPrices;
 
-let reservations = JSON.parse(
-    localStorage.getItem("paratrikeReservations")
-) || [];
+/* =========================
+   STORAGE KEYS
+========================= */
+
+const PRICE_KEY = "paratrike_prices";
+const RESERVATION_KEY = "paratrike_reservations";
 
 
-// ========================================
-// ابزارها
-// ========================================
+/* =========================
+   LOAD PRICES
+========================= */
 
-function formatPrice(number) {
-    return new Intl.NumberFormat("fa-IR").format(number);
+let prices = loadPrices();
+
+function loadPrices() {
+
+    try {
+
+        const saved = localStorage.getItem(PRICE_KEY);
+
+        if (!saved) {
+            localStorage.setItem(
+                PRICE_KEY,
+                JSON.stringify(DEFAULT_PRICES)
+            );
+
+            return { ...DEFAULT_PRICES };
+        }
+
+        const parsed = JSON.parse(saved);
+
+        return {
+            ...DEFAULT_PRICES,
+            ...parsed
+        };
+
+    } catch (error) {
+
+        console.error("خطا در خواندن قیمت‌ها:", error);
+
+        return { ...DEFAULT_PRICES };
+    }
 }
 
-function saveData() {
-    localStorage.setItem(
-        "paratrikePrices",
-        JSON.stringify(prices)
-    );
+
+/* =========================
+   SAVE PRICES
+========================= */
+
+function savePrices() {
 
     localStorage.setItem(
-        "paratrikeReservations",
+        PRICE_KEY,
+        JSON.stringify(prices)
+    );
+}
+
+
+/* =========================
+   FORMAT PRICE
+========================= */
+
+function formatPrice(number) {
+
+    number = Number(number) || 0;
+
+    return number.toLocaleString("fa-IR");
+}
+
+
+/* =========================
+   UPDATE SITE PRICES
+========================= */
+
+function updateSitePrices() {
+
+    const normal = document.getElementById("normalPrice");
+    const vip = document.getElementById("vipPrice");
+    const cip = document.getElementById("cipPrice");
+    const tourist = document.getElementById("touristPrice");
+    const camera = document.getElementById("cameraPrice");
+
+    if (normal)
+        normal.textContent = formatPrice(prices.normal);
+
+    if (vip)
+        vip.textContent = formatPrice(prices.vip);
+
+    if (cip)
+        cip.textContent = formatPrice(prices.cip);
+
+    if (tourist)
+        tourist.textContent = formatPrice(prices.tourist);
+
+    if (camera)
+        camera.textContent = formatPrice(prices.camera);
+}
+
+
+/* =========================
+   GET RESERVATIONS
+========================= */
+
+function getReservations() {
+
+    try {
+
+        const saved =
+            localStorage.getItem(RESERVATION_KEY);
+
+        if (!saved)
+            return [];
+
+        const parsed = JSON.parse(saved);
+
+        return Array.isArray(parsed)
+            ? parsed
+            : [];
+
+    } catch (error) {
+
+        console.error(
+            "خطا در خواندن رزروها:",
+            error
+        );
+
+        return [];
+    }
+}
+
+
+/* =========================
+   SAVE RESERVATIONS
+========================= */
+
+function saveReservations(reservations) {
+
+    localStorage.setItem(
+        RESERVATION_KEY,
         JSON.stringify(reservations)
     );
 }
 
 
-// ========================================
-// نمایش قیمت‌ها در سایت
-// ========================================
-
-function updateSitePrices() {
-
-    document.getElementById("normalPrice").textContent =
-        formatPrice(prices.normal);
-
-    document.getElementById("vipPrice").textContent =
-        formatPrice(prices.vip);
-
-    document.getElementById("cipPrice").textContent =
-        formatPrice(prices.cip);
-
-    document.getElementById("touristPrice").textContent =
-        formatPrice(prices.tourist);
-
-    document.getElementById("cameraPrice").textContent =
-        formatPrice(prices.camera) + " تومان";
-
-    document.querySelector(
-        '#camera option[value="yes"]'
-    ).textContent =
-        "بله - " + formatPrice(prices.camera) + " تومان";
-}
-
-
-// ========================================
-// انتخاب پرواز
-// ========================================
+/* =========================
+   FLIGHT SELECTION
+========================= */
 
 function selectFlight(type) {
 
-    const flightType =
-        document.getElementById("flightType");
+    const flightSelect =
+        document.getElementById("flight");
 
-    flightType.value = type;
+    if (!flightSelect)
+        return;
 
-    document.getElementById("booking")
-        .scrollIntoView({
+    flightSelect.value = type;
+
+    updatePricePreview();
+
+    const booking =
+        document.getElementById("booking");
+
+    if (booking) {
+
+        booking.scrollIntoView({
             behavior: "smooth"
         });
 
-    updatePricePreview();
+    }
 }
 
 
-// ========================================
-// محاسبه مبلغ
-// ========================================
+/* =========================
+   CALCULATE PRICE
+========================= */
 
 function calculatePrice() {
 
-    const flightType =
-        document.getElementById("flightType").value;
-
-    const passengerType =
-        document.getElementById("passengerType").value;
+    const flight =
+        document.getElementById("flight")?.value;
 
     const weight =
-        Number(document.getElementById("weight").value);
+        Number(
+            document.getElementById("weight")?.value
+        ) || 0;
 
     const passengers =
-        Number(document.getElementById("passengers").value) || 1;
+        Number(
+            document.getElementById("passengers")?.value
+        ) || 1;
 
     const camera =
-        document.getElementById("camera").value;
+        document.getElementById("camera")?.value;
+
+    if (!flight) {
+
+        return {
+            total: 0,
+            needsCheck: false
+        };
+
+    }
 
 
-    // وزن بالای ۸۰
+    let basePrice =
+        Number(prices[flight]) || 0;
+
+
+    /*
+       اگر وزن بیشتر از ۸۰ باشد،
+       قیمت نهایی باید در محل مشخص شود.
+    */
+
     if (weight > 80) {
 
         return {
-            needsCheck: true,
-            total: 0
+            total: 0,
+            needsCheck: true
         };
-    }
-
-
-    let singlePrice;
-
-
-    // توریست
-    if (passengerType === "tourist") {
-
-        singlePrice = prices.tourist;
-
-    } else {
-
-        singlePrice = prices[flightType];
 
     }
 
 
-    let total = singlePrice * passengers;
+    let total =
+        basePrice * passengers;
 
 
-    // دوربین
     if (camera === "yes") {
 
-        total += prices.camera;
+        total += Number(prices.camera) || 0;
 
     }
 
 
     return {
-        needsCheck: false,
-        total: total
+        total,
+        needsCheck: false
     };
 }
 
 
-// ========================================
-// نمایش مبلغ
-// ========================================
+/* =========================
+   UPDATE PRICE PREVIEW
+========================= */
 
 function updatePricePreview() {
 
-    const result = calculatePrice();
-
-    const box =
+    const preview =
         document.getElementById("pricePreview");
+
+    const warning =
+        document.getElementById("priceWarning");
+
+    const weightWarning =
+        document.getElementById("weightWarning");
+
+
+    if (!preview)
+        return;
+
+
+    const result =
+        calculatePrice();
 
 
     if (result.needsCheck) {
 
-        box.innerHTML = `
-            ⚠️ وزن بالای ۸۰ کیلوگرم است.
-            <br>
-            <strong>
-                لطفاً برای وزن‌کشی و تعیین قیمت
-                به مجموعه مراجعه کنید.
-            </strong>
-        `;
+        preview.textContent =
+            "تعیین قیمت در محل";
+
+        if (warning) {
+
+            warning.textContent =
+                "وزن بالای ۸۰ کیلوگرم است؛ قیمت پس از بررسی در محل تعیین می‌شود.";
+
+        }
+
+        if (weightWarning) {
+
+            weightWarning.textContent =
+                "برای وزن بالای ۸۰ کیلوگرم، لطفاً جهت بررسی به محل مراجعه کنید.";
+
+        }
 
         return;
+
     }
 
 
-    box.innerHTML = `
-        مبلغ تقریبی:
-        <strong>
-            ${formatPrice(result.total)}
-            تومان
-        </strong>
-    `;
+    if (warning)
+        warning.textContent = "";
+
+
+    if (weightWarning)
+        weightWarning.textContent = "";
+
+
+    preview.textContent =
+        formatPrice(result.total) + " تومان";
 }
 
 
-// ========================================
-// اتصال تغییرات فرم
-// ========================================
-
-[
-    "flightType",
-    "passengerType",
-    "weight",
-    "passengers",
-    "camera"
-].forEach(id => {
-
-    document.getElementById(id)
-        .addEventListener("input", updatePricePreview);
-
-    document.getElementById(id)
-        .addEventListener("change", updatePricePreview);
-
-});
-
-
-// ========================================
-// ثبت رزرو
-// ========================================
-
-document
-    .getElementById("bookingForm")
-    .addEventListener("submit", function(event) {
-
-        event.preventDefault();
-
-
-        const name =
-            document.getElementById("fullName").value.trim();
-
-        const phone =
-            document.getElementById("phone").value.trim();
-
-        const flightType =
-            document.getElementById("flightType").value;
-
-        const passengerType =
-            document.getElementById("passengerType").value;
-
-        const weight =
-            Number(document.getElementById("weight").value);
-
-        const passengers =
-            Number(document.getElementById("passengers").value);
-
-        const date =
-            document.getElementById("flightDate").value;
-
-        const time =
-            document.getElementById("flightTime").value;
-
-        const camera =
-            document.getElementById("camera").value;
-
-
-        // بررسی شماره موبایل
-        if (!/^09\d{9}$/.test(phone)) {
-
-            alert(
-                "لطفاً شماره موبایل را به شکل صحیح وارد کنید."
-            );
-
-            return;
-        }
-
-
-        // بررسی وزن
-        if (!weight || weight <= 0) {
-
-            alert("لطفاً وزن مسافر را وارد کنید.");
-
-            return;
-        }
-
-
-        // وزن بالای ۸۰
-        if (weight > 80) {
-
-            alert(
-                "وزن شما بالای ۸۰ کیلوگرم است.\n\n" +
-                "لطفاً برای وزن‌کشی و تعیین قیمت " +
-                "به مجموعه مراجعه کنید."
-            );
-
-            return;
-        }
-
-
-        const result = calculatePrice();
-
-
-        const flightNames = {
-            normal: "پرواز عادی",
-            vip: "VIP",
-            cip: "CIP"
-        };
-
-
-        const reservation = {
-
-            id: Date.now(),
-
-            name: name,
-
-            phone: phone,
-
-            flight:
-                flightNames[flightType],
-
-            passengerType:
-                passengerType === "tourist"
-                    ? "توریست"
-                    : "مسافر عادی",
-
-            weight: weight,
-
-            passengers: passengers,
-
-            date: date,
-
-            time: time,
-
-            camera:
-                camera === "yes"
-                    ? "دارد"
-                    : "ندارد",
-
-            price: result.total,
-
-            status: "در انتظار بررسی",
-
-            createdAt:
-                new Date().toLocaleString("fa-IR")
-
-        };
-
-
-        reservations.unshift(reservation);
-
-        saveData();
-
-        renderReservations();
-
-
-        alert(
-            "✅ درخواست رزرو شما ثبت شد.\n\n" +
-            "کد پیگیری: " +
-            reservation.id
-        );
-
-
-        this.reset();
-
-        document.getElementById("passengers").value = 1;
-
-        updatePricePreview();
-
-    });
-
-
-// ========================================
-// پنل مدیریت
-// ========================================
+/* =========================
+   ADMIN OPEN
+========================= */
 
 function openAdmin() {
 
     const password =
-        prompt("رمز ورود مدیریت را وارد کنید:");
+        prompt("رمز ورود مدیر را وارد کنید:");
 
-    // رمز موقت
+    if (password === null)
+        return;
+
+
     if (password !== "1234") {
 
-        alert("رمز ورود اشتباه است.");
+        alert("❌ رمز عبور اشتباه است.");
 
         return;
     }
 
 
-    document.getElementById("adminPanel")
-        .style.display = "block";
+    const panel =
+        document.getElementById("adminPanel");
 
-    document.getElementById("adminPanel")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
+    if (!panel)
+        return;
+
+
+    panel.style.display = "block";
 
 
     loadAdminPrices();
@@ -387,87 +358,442 @@ function openAdmin() {
 }
 
 
+/* =========================
+   ADMIN CLOSE
+========================= */
+
 function closeAdmin() {
 
-    document.getElementById("adminPanel")
-        .style.display = "none";
+    const panel =
+        document.getElementById("adminPanel");
 
+    if (panel)
+        panel.style.display = "none";
 }
 
 
-// ========================================
-// بارگذاری قیمت‌ها در پنل
-// ========================================
+/* =========================
+   LOAD ADMIN PRICES
+========================= */
 
 function loadAdminPrices() {
 
-    document.getElementById("adminNormal").value =
-        prices.normal;
+    const normal =
+        document.getElementById("adminNormalPrice");
 
-    document.getElementById("adminVip").value =
-        prices.vip;
+    const vip =
+        document.getElementById("adminVipPrice");
 
-    document.getElementById("adminCip").value =
-        prices.cip;
+    const cip =
+        document.getElementById("adminCipPrice");
 
-    document.getElementById("adminTourist").value =
-        prices.tourist;
+    const tourist =
+        document.getElementById("adminTouristPrice");
 
-    document.getElementById("adminCamera").value =
-        prices.camera;
+    const camera =
+        document.getElementById("adminCameraPrice");
+
+
+    if (normal)
+        normal.value = prices.normal;
+
+    if (vip)
+        vip.value = prices.vip;
+
+    if (cip)
+        cip.value = prices.cip;
+
+    if (tourist)
+        tourist.value = prices.tourist;
+
+    if (camera)
+        camera.value = prices.camera;
 }
 
 
-// ========================================
-// ذخیره قیمت‌ها
-// ========================================
+/* =========================
+   SAVE ADMIN PRICES
+========================= */
 
-function savePrices() {
+function saveAdminPrices() {
 
-    prices.normal =
-        Number(document.getElementById("adminNormal").value);
+    const normal =
+        document.getElementById("adminNormalPrice");
 
-    prices.vip =
-        Number(document.getElementById("adminVip").value);
+    const vip =
+        document.getElementById("adminVipPrice");
 
-    prices.cip =
-        Number(document.getElementById("adminCip").value);
+    const cip =
+        document.getElementById("adminCipPrice");
 
-    prices.tourist =
-        Number(document.getElementById("adminTourist").value);
+    const tourist =
+        document.getElementById("adminTouristPrice");
 
-    prices.camera =
-        Number(document.getElementById("adminCamera").value);
+    const camera =
+        document.getElementById("adminCameraPrice");
 
 
-    saveData();
+    const newPrices = {
+
+        normal:
+            Number(normal?.value) ||
+            prices.normal,
+
+        vip:
+            Number(vip?.value) ||
+            prices.vip,
+
+        cip:
+            Number(cip?.value) ||
+            prices.cip,
+
+        tourist:
+            Number(tourist?.value) ||
+            prices.tourist,
+
+        camera:
+            Number(camera?.value) ||
+            prices.camera
+    };
+
+
+    prices = newPrices;
+
+
+    savePrices();
 
     updateSitePrices();
 
     updatePricePreview();
 
 
-    alert(
-        "✅ قیمت‌ها با موفقیت ذخیره شدند."
+    alert("✅ قیمت‌ها با موفقیت ذخیره شدند.");
+}
+
+
+/* =========================
+   BOOKING FORM
+========================= */
+
+const bookingForm =
+    document.getElementById("bookingForm");
+
+
+if (bookingForm) {
+
+    bookingForm.addEventListener(
+        "submit",
+        function(event) {
+
+            event.preventDefault();
+
+
+            const name =
+                document.getElementById("name")
+                ?.value
+                .trim();
+
+
+            const phone =
+                document.getElementById("phone")
+                ?.value
+                .trim();
+
+
+            const flight =
+                document.getElementById("flight")
+                ?.value;
+
+
+            const passengerType =
+                document.getElementById(
+                    "passengerType"
+                )?.value;
+
+
+            const weight =
+                Number(
+                    document.getElementById("weight")
+                    ?.value
+                ) || 0;
+
+
+            const passengers =
+                Number(
+                    document.getElementById(
+                        "passengers"
+                    )?.value
+                ) || 1;
+
+
+            const date =
+                document.getElementById("date")
+                ?.value;
+
+
+            const time =
+                document.getElementById("time")
+                ?.value;
+
+
+            const camera =
+                document.getElementById("camera")
+                ?.value;
+
+
+            /* =====================
+               VALIDATION
+            ===================== */
+
+            if (!name) {
+
+                alert("لطفاً نام و نام خانوادگی را وارد کنید.");
+
+                return;
+            }
+
+
+            if (!/^09\d{9}$/.test(phone)) {
+
+                alert(
+                    "لطفاً شماره موبایل معتبر وارد کنید."
+                );
+
+                return;
+            }
+
+
+            if (!flight) {
+
+                alert(
+                    "لطفاً نوع پرواز را انتخاب کنید."
+                );
+
+                return;
+            }
+
+
+            if (!weight || weight <= 0) {
+
+                alert(
+                    "لطفاً وزن مسافر را وارد کنید."
+                );
+
+                return;
+            }
+
+
+            if (!date) {
+
+                alert(
+                    "لطفاً تاریخ پرواز را انتخاب کنید."
+                );
+
+                return;
+            }
+
+
+            if (!time) {
+
+                alert(
+                    "لطفاً ساعت پرواز را انتخاب کنید."
+                );
+
+                return;
+            }
+
+
+            /* =====================
+               PRICE
+            ===================== */
+
+            const result =
+                calculatePrice();
+
+
+            let price = result.total;
+
+
+            let priceText =
+                formatPrice(price) + " تومان";
+
+
+            if (result.needsCheck) {
+
+                price = null;
+
+                priceText =
+                    "تعیین قیمت در محل";
+            }
+
+
+            /* =====================
+               FLIGHT NAME
+            ===================== */
+
+            const flightNames = {
+
+                normal: "پرواز عادی",
+
+                vip: "پرواز VIP",
+
+                cip: "پرواز CIP",
+
+                tourist: "پرواز توریستی"
+            };
+
+
+            /* =====================
+               RESERVATION OBJECT
+            ===================== */
+
+            const reservation = {
+
+                id:
+                    Date.now()
+                    .toString(),
+
+                name,
+
+                phone,
+
+                flight,
+
+                flightName:
+                    flightNames[flight] ||
+                    flight,
+
+                passengerType,
+
+                weight,
+
+                passengers,
+
+                date,
+
+                time,
+
+                camera:
+                    camera === "yes",
+
+                price,
+
+                priceText,
+
+                status:
+                    "pending",
+
+                createdAt:
+                    new Date()
+                    .toISOString()
+            };
+
+
+            /* =====================
+               SAVE
+            ===================== */
+
+            const reservations =
+                getReservations();
+
+
+            reservations.unshift(
+                reservation
+            );
+
+
+            saveReservations(
+                reservations
+            );
+
+
+            /* =====================
+               REFRESH ADMIN
+            ===================== */
+
+            renderReservations();
+
+
+            /* =====================
+               SUCCESS
+            ===================== */
+
+            alert(
+                "✅ درخواست رزرو شما با موفقیت ثبت شد.\n\n" +
+                "وضعیت درخواست: در انتظار تأیید"
+            );
+
+
+            /* =====================
+               RESET FORM
+            ===================== */
+
+            bookingForm.reset();
+
+
+            const preview =
+                document.getElementById(
+                    "pricePreview"
+                );
+
+            if (preview) {
+
+                preview.textContent =
+                    "۰ تومان";
+            }
+
+
+            const warning =
+                document.getElementById(
+                    "priceWarning"
+                );
+
+            if (warning)
+                warning.textContent = "";
+
+
+            const weightWarning =
+                document.getElementById(
+                    "weightWarning"
+                );
+
+            if (weightWarning)
+                weightWarning.textContent = "";
+
+        }
     );
 }
 
 
-// ========================================
-// نمایش رزروها
-// ========================================
+/* =========================
+   RENDER RESERVATIONS
+========================= */
 
 function renderReservations() {
 
     const list =
-        document.getElementById("reservationsList");
+        document.getElementById(
+            "reservationList"
+        );
+
+
+    if (!list)
+        return;
+
+
+    const reservations =
+        getReservations();
 
 
     if (reservations.length === 0) {
 
         list.innerHTML = `
-            <p class="empty-reservations">
-                هنوز رزروی ثبت نشده است.
+            <p style="
+                color:#8998a9;
+                text-align:center;
+                padding:30px;
+            ">
+                هنوز درخواست رزروی ثبت نشده است.
             </p>
         `;
 
@@ -475,74 +801,116 @@ function renderReservations() {
     }
 
 
-    list.innerHTML = "";
+    list.innerHTML =
+        reservations.map(
+            reservation =>
+                createReservationHTML(
+                    reservation
+                )
+        ).join("");
+}
 
 
-    reservations.forEach(reservation => {
+/* =========================
+   RESERVATION HTML
+========================= */
 
-        const item =
-            document.createElement("div");
+function createReservationHTML(
+    reservation
+) {
 
-        item.className = "reservation-item";
-
-
-        item.innerHTML = `
-
-            <div class="reservation-main">
-
-                <h4>
-                    🎫 ${reservation.name}
-                </h4>
-
-                <p>
-                    📞 ${reservation.phone}
-                </p>
-
-                <p>
-                    🪂 ${reservation.flight}
-                </p>
-
-                <p>
-                    👥 تعداد:
-                    ${reservation.passengers}
-                </p>
-
-                <p>
-                    ⚖️ وزن:
-                    ${reservation.weight} کیلو
-                </p>
-
-                <p>
-                    📅 ${reservation.date}
-                    — 🕐 ${reservation.time}
-                </p>
-
-                <p>
-                    📷 دوربین:
-                    ${reservation.camera}
-                </p>
-
-                <p>
-                    🌍 ${reservation.passengerType}
-                </p>
-
-                <strong>
-                    💰 ${formatPrice(reservation.price)}
-                    تومان
-                </strong>
-
-                <p>
-                    وضعیت:
-                    <b>${reservation.status}</b>
-                </p>
-
-            </div>
+    let statusText = "در انتظار تأیید";
+    let statusClass = "pending";
 
 
-            <div class="reservation-actions">
+    if (reservation.status === "confirmed") {
+
+        statusText = "تأیید شده";
+        statusClass = "confirmed";
+
+    }
+
+
+    if (reservation.status === "cancelled") {
+
+        statusText = "لغو شده";
+        statusClass = "cancelled";
+
+    }
+
+
+    const cameraText =
+        reservation.camera
+            ? "دارد"
+            : "ندارد";
+
+
+    const price =
+        reservation.price === null
+            ? "تعیین قیمت در محل"
+            : reservation.priceText;
+
+
+    return `
+
+        <div class="reservation-item">
+
+            <h4>
+                👤 ${escapeHTML(reservation.name)}
+            </h4>
+
+            <p>
+                📞 ${escapeHTML(reservation.phone)}
+            </p>
+
+            <p>
+                🪂 ${escapeHTML(reservation.flightName)}
+            </p>
+
+            <p>
+                ⚖️ وزن:
+                ${reservation.weight}
+                کیلوگرم
+            </p>
+
+            <p>
+                👥 تعداد:
+                ${reservation.passengers}
+                نفر
+            </p>
+
+            <p>
+                📅 تاریخ:
+                ${escapeHTML(reservation.date)}
+            </p>
+
+            <p>
+                ⏰ ساعت:
+                ${escapeHTML(reservation.time)}
+            </p>
+
+            <p>
+                📷 دوربین:
+                ${cameraText}
+            </p>
+
+            <p>
+                💰 مبلغ:
+                ${price}
+            </p>
+
+            <span class="status ${statusClass}">
+                ${statusText}
+            </span>
+
+
+            <div class="admin-actions">
 
                 <button
-                    onclick="confirmReservation(${reservation.id})">
+                    onclick="changeReservationStatus(
+                        '${reservation.id}',
+                        'confirmed'
+                    )">
 
                     ✅ تأیید
 
@@ -550,7 +918,10 @@ function renderReservations() {
 
 
                 <button
-                    onclick="cancelReservation(${reservation.id})">
+                    onclick="changeReservationStatus(
+                        '${reservation.id}',
+                        'cancelled'
+                    )">
 
                     ❌ لغو
 
@@ -558,7 +929,9 @@ function renderReservations() {
 
 
                 <button
-                    onclick="deleteReservation(${reservation.id})">
+                    onclick="deleteReservation(
+                        '${reservation.id}'
+                    )">
 
                     🗑️ حذف
 
@@ -566,88 +939,144 @@ function renderReservations() {
 
             </div>
 
-        `;
-
-
-        list.appendChild(item);
-
-    });
-
+        </div>
+    `;
 }
 
 
-// ========================================
-// تأیید رزرو
-// ========================================
+/* =========================
+   CHANGE STATUS
+========================= */
 
-function confirmReservation(id) {
+function changeReservationStatus(
+    id,
+    status
+) {
 
-    const reservation =
-        reservations.find(item => item.id === id);
-
-    if (!reservation) return;
+    const reservations =
+        getReservations();
 
 
-    reservation.status = "تأیید شده";
+    const index =
+        reservations.findIndex(
+            reservation =>
+                reservation.id === id
+        );
 
-    saveData();
+
+    if (index === -1)
+        return;
+
+
+    reservations[index].status =
+        status;
+
+
+    saveReservations(
+        reservations
+    );
+
 
     renderReservations();
-
 }
 
 
-// ========================================
-// لغو رزرو
-// ========================================
-
-function cancelReservation(id) {
-
-    const reservation =
-        reservations.find(item => item.id === id);
-
-    if (!reservation) return;
-
-
-    reservation.status = "لغو شده";
-
-    saveData();
-
-    renderReservations();
-
-}
-
-
-// ========================================
-// حذف رزرو
-// ========================================
+/* =========================
+   DELETE RESERVATION
+========================= */
 
 function deleteReservation(id) {
 
-    if (!confirm("این رزرو حذف شود؟")) {
+    const confirmDelete =
+        confirm(
+            "آیا از حذف این درخواست مطمئن هستید؟"
+        );
+
+
+    if (!confirmDelete)
         return;
-    }
+
+
+    let reservations =
+        getReservations();
 
 
     reservations =
         reservations.filter(
-            item => item.id !== id
+            reservation =>
+                reservation.id !== id
         );
 
 
-    saveData();
+    saveReservations(
+        reservations
+    );
+
 
     renderReservations();
-
 }
 
 
-// ========================================
-// شروع سایت
-// ========================================
+/* =========================
+   ESCAPE HTML
+   جلوگیری از ورود کد HTML
+========================= */
 
-updateSitePrices();
+function escapeHTML(value) {
 
-updatePricePreview();
+    return String(value)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
 
-renderReservations();
+
+/* =========================
+   INPUT EVENTS
+========================= */
+
+[
+    "flight",
+    "weight",
+    "passengers",
+    "camera"
+].forEach(id => {
+
+    const element =
+        document.getElementById(id);
+
+
+    if (element) {
+
+        element.addEventListener(
+            "input",
+            updatePricePreview
+        );
+
+        element.addEventListener(
+            "change",
+            updatePricePreview
+        );
+    }
+
+});
+
+
+/* =========================
+   INITIALIZE
+========================= */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        updateSitePrices();
+
+        updatePricePreview();
+
+        renderReservations();
+
+    }
+);
