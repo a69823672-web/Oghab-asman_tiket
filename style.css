@@ -1,0 +1,574 @@
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Vazirmatn', sans-serif;
+    background: #f5f6f8;
+    color: #17202a;
+    line-height: 1.8;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: min(1180px, 92%);
+    margin: auto;
+}
+
+.section {
+    padding: 100px 0;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.header {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10;
+    color: white;
+    padding: 22px 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 30px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo > span {
+    width: 48px;
+    height: 48px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+}
+
+.logo strong {
+    display: block;
+    font-size: 17px;
+    letter-spacing: 2px;
+}
+
+.logo small {
+    display: block;
+    opacity: .7;
+    font-size: 10px;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav a {
+    font-size: 14px;
+    color: rgba(255,255,255,.85);
+    transition: .25s;
+}
+
+.nav a:hover {
+    color: white;
+}
+
+.header-btn {
+    padding: 11px 22px;
+    border: 1px solid rgba(255,255,255,.35);
+    border-radius: 10px;
+    background: rgba(255,255,255,.1);
+    backdrop-filter: blur(10px);
+    font-size: 13px;
+    transition: .25s;
+}
+
+.header-btn:hover {
+    background: white;
+    color: #111827;
+}
+
+
+/* =========================
+   HERO
+========================= */
+
+.hero {
+    min-height: 760px;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(8,15,25,.92),
+            rgba(8,15,25,.58),
+            rgba(8,15,25,.78)
+        ),
+        url("https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2000&q=85");
+
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    color: white;
+    padding-top: 80px;
+}
+
+.hero-label {
+    display: inline-block;
+    padding: 7px 15px;
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50px;
+    background: rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+    font-size: 12px;
+    margin-bottom: 20px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 6vw, 78px);
+    line-height: 1.15;
+    font-weight: 800;
+    max-width: 720px;
+}
+
+.hero h1 span {
+    opacity: .65;
+}
+
+.hero p {
+    max-width: 580px;
+    margin: 25px 0 35px;
+    color: rgba(255,255,255,.75);
+    font-size: 16px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 14px 27px;
+    border-radius: 10px;
+    font-size: 14px;
+    transition: .25s;
+}
+
+.btn-primary {
+    background: white;
+    color: #111827;
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+}
+
+.btn-secondary {
+    border: 1px solid rgba(255,255,255,.35);
+    color: white;
+    background: rgba(255,255,255,.08);
+}
+
+.btn-secondary:hover {
+    background: rgba(255,255,255,.16);
+}
+
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title {
+    text-align: center;
+    margin-bottom: 55px;
+}
+
+.section-title span {
+    font-size: 12px;
+    color: #777;
+}
+
+.section-title h2 {
+    font-size: 35px;
+    margin: 8px 0;
+    font-weight: 800;
+}
+
+.section-title p {
+    color: #777;
+    font-size: 14px;
+}
+
+
+/* =========================
+   FLIGHTS
+========================= */
+
+.flights {
+    background: #f5f6f8;
+}
+
+.flight-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.flight-card {
+    position: relative;
+    background: white;
+    border: 1px solid #e8eaee;
+    border-radius: 20px;
+    padding: 30px;
+    transition: .3s;
+    overflow: hidden;
+}
+
+.flight-card:hover {
+    transform: translateY(-7px);
+    box-shadow: 0 20px 50px rgba(0,0,0,.08);
+}
+
+.flight-card.featured {
+    border: 1px solid #1c2633;
+    box-shadow: 0 15px 40px rgba(0,0,0,.08);
+}
+
+.popular {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #1c2633;
+    color: white;
+    padding: 7px 15px;
+    border-radius: 0 0 12px 0;
+    font-size: 11px;
+}
+
+.card-top {
+    margin-bottom: 22px;
+}
+
+.flight-badge {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: #777;
+}
+
+.flight-card h3 {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.duration {
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+.price {
+    display: flex;
+    align-items: baseline;
+    gap: 7px;
+    margin-bottom: 25px;
+}
+
+.price strong {
+    font-size: 29px;
+}
+
+.price span {
+    font-size: 12px;
+    color: #777;
+}
+
+.flight-card ul {
+    list-style: none;
+    border-top: 1px solid #eee;
+    padding-top: 20px;
+    margin-bottom: 25px;
+}
+
+.flight-card li {
+    font-size: 13px;
+    color: #666;
+    margin: 9px 0;
+}
+
+.card-btn {
+    display: block;
+    text-align: center;
+    background: #17202a;
+    color: white;
+    padding: 13px;
+    border-radius: 10px;
+    font-size: 13px;
+    transition: .25s;
+}
+
+.card-btn:hover {
+    background: #000;
+}
+
+
+/* =========================
+   SERVICES
+========================= */
+
+.services {
+    background: white;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.service-card {
+    padding: 32px;
+    border: 1px solid #e8eaee;
+    border-radius: 18px;
+    transition: .3s;
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,.06);
+}
+
+.service-icon {
+    font-size: 32px;
+    margin-bottom: 18px;
+}
+
+.service-card h3 {
+    margin-bottom: 8px;
+}
+
+.service-card p {
+    color: #777;
+    font-size: 13px;
+    min-height: 65px;
+}
+
+.service-card strong {
+    font-size: 16px;
+}
+
+
+/* =========================
+   BOOKING
+========================= */
+
+.booking {
+    background: #eef0f3;
+}
+
+.booking-box {
+    background: #17202a;
+    color: white;
+    border-radius: 25px;
+    padding: 50px;
+    display: grid;
+    grid-template-columns: .8fr 1.2fr;
+    gap: 50px;
+    box-shadow: 0 25px 60px rgba(0,0,0,.12);
+}
+
+.booking-info span {
+    font-size: 12px;
+    color: #aeb7c1;
+}
+
+.booking-info h2 {
+    font-size: 34px;
+    margin: 12px 0;
+}
+
+.booking-info p {
+    color: #aeb7c1;
+    font-size: 14px;
+}
+
+.booking-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 17px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.form-group label {
+    font-size: 12px;
+    color: #c8cdd3;
+}
+
+.form-group input,
+.form-group select {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1px solid #35404c;
+    background: #202b37;
+    color: white;
+    border-radius: 9px;
+    outline: none;
+    font-family: inherit;
+}
+
+.form-group input::placeholder {
+    color: #87919c;
+}
+
+.submit-btn {
+    grid-column: 1 / -1;
+    border: none;
+    padding: 14px;
+    border-radius: 9px;
+    background: white;
+    color: #17202a;
+    font-family: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .25s;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer {
+    background: #0d141b;
+    color: white;
+    padding: 55px 0 20px;
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    padding-bottom: 40px;
+}
+
+.footer strong {
+    letter-spacing: 2px;
+}
+
+.footer p {
+    color: #89939e;
+    font-size: 13px;
+    margin-top: 7px;
+}
+
+.footer h4 {
+    margin-bottom: 10px;
+}
+
+.copyright {
+    border-top: 1px solid #222c35;
+    padding-top: 20px;
+    text-align: center;
+    color: #68727c;
+    font-size: 11px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
+
+    .nav {
+        display: none;
+    }
+
+    .flight-grid,
+    .service-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .booking-box {
+        grid-template-columns: 1fr;
+        padding: 35px 25px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .section {
+        padding: 70px 0;
+    }
+
+    .header-btn {
+        padding: 9px 14px;
+    }
+
+    .hero {
+        min-height: 680px;
+    }
+
+    .hero h1 {
+        font-size: 44px;
+    }
+
+    .hero p {
+        font-size: 14px;
+    }
+
+    .booking-form {
+        grid-template-columns: 1fr;
+    }
+
+    .submit-btn {
+        grid-column: auto;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+    }
+
+}
